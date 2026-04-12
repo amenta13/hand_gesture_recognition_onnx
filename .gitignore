@@ -1,0 +1,7 @@
+.vscode/
+__pycache__/
+*.engine
+*.profile
+*.mp4
+test_distance_calc.py
+README_en.md
