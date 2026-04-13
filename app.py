@@ -18,7 +18,7 @@ from model import PalmDetection
 from model import HandLandmark
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
-
+from collections import deque
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -160,6 +160,8 @@ def main():
     import time
     last_click_time = 0
     CLICK_DELAY = 0.5  # seconds
+
+    finger_trail = deque(maxlen=500)
 
     while True:
         fps = cvFpsCalc.get()
@@ -473,6 +475,12 @@ def main():
                     # --- Mouse Control ----------------------------------------------------
                     # Only click if pointing
                     if hand_sign_id == 2:  # pointing gesture
+
+                        # Trailing on pointing fingertip
+                        fx = int(landmark[8][0])
+                        fy = int(landmark[8][1])
+                        finger_trail.append((fx, fy))
+
                         current_time = time.time()
                         if current_time - last_click_time > CLICK_DELAY:
 
@@ -512,6 +520,18 @@ def main():
                         1,
                         cv.LINE_AA,
                     )
+
+                # Draw fingertip trail
+                for i in range(1, len(finger_trail)):
+                    cv.line(
+                        debug_image,
+                        finger_trail[i - 1],
+                        finger_trail[i],
+                        (160, 32, 240),  # bright yellow
+                        2,
+                        cv.LINE_AA
+                    )
+
 
                 """
                 人差し指の軌跡が表示上に残り続けるのを割けるため
