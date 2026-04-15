@@ -168,6 +168,10 @@ def main():
 
         # キー処理(ESC：終了) #################################################
         key = cv.waitKey(1) if not args.image else cv.waitKey(0) if image is not None and args.image else cv.waitKey(1)
+        if key == ord('s'):  # S to screenshot
+            screenshot = pyautogui.screenshot()
+            screenshot.save("screenshot.png")
+            print("Screenshot saved")
         if key == 27:  # ESC
             break
         number, mode, auto, prev_number = select_mode(key, mode, auto, prev_number)
@@ -477,9 +481,11 @@ def main():
                     if hand_sign_id == 2:  # pointing gesture
 
                         # Trailing on pointing fingertip
+                        """
                         fx = int(landmark[8][0])
                         fy = int(landmark[8][1])
                         finger_trail.append((fx, fy))
+                        """
 
                         current_time = time.time()
                         if current_time - last_click_time > CLICK_DELAY:
@@ -522,6 +528,7 @@ def main():
                     )
 
                 # Draw fingertip trail
+                """
                 for i in range(1, len(finger_trail)):
                     cv.line(
                         debug_image,
@@ -531,6 +538,7 @@ def main():
                         2,
                         cv.LINE_AA
                     )
+                """
 
 
                 """
