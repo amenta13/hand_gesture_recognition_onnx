@@ -634,12 +634,20 @@ def main():
         debug_image = draw_point_history(debug_image, point_history)
         debug_image = draw_info(debug_image, fps, mode, number, auto)
 
-        # Screen reflection
-        cv.namedWindow('Hand Gesture Recognition', cv.WND_PROP_FULLSCREEN)
-        cv.setWindowProperty('Hand Gesture Recognition', cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
+        # Change to True to hide display window
+        hidden = False
 
-        cv.imshow('Hand Gesture Recognition', debug_image)
-        video_writer.write(debug_image)
+        if not hidden:
+            # Screen reflection
+            cv.namedWindow('Hand Gesture Recognition', cv.WND_PROP_FULLSCREEN)
+            cv.setWindowProperty('Hand Gesture Recognition', cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
+            cv.imshow('Hand Gesture Recognition', debug_image)
+            video_writer.write(debug_image)
+        else:
+            # Hidden window so cv.waitKey still receives keyboard input
+            cv.namedWindow('Hidden', cv.WINDOW_NORMAL)
+            cv.setWindowProperty('Hidden', cv.WND_PROP_VISIBLE, 0)
+
 
     if video_writer:
         video_writer.release()
