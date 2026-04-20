@@ -182,11 +182,27 @@ def main():
         image = image if args.disable_image_flip else cv.flip(image, 1) # ミラー表示
 
         # Crop and zoom
-        # Define your table region (adjust these values)
-        TABLE_X1 = 0            # default = 0
-        TABLE_Y1 = 0            # default = 0
-        TABLE_X2 = cap_width    # default = cap_width (640)
-        TABLE_Y2 = cap_height   # default = cap_height (480)
+        # Adjustable zoom factor (1.0 = no zoom, 1.5 = 1.5× zoom, 2.0 = 2× zoom)
+        ZOOM = 1.9
+
+        # Compute crop size
+        crop_w = int(cap_width / ZOOM)
+        crop_h = int(cap_height / ZOOM)
+
+        # Center crop
+        center_x = cap_width // 2
+        center_y = cap_height // 2
+
+        TABLE_X1 = center_x - crop_w // 2
+        TABLE_Y1 = center_y - crop_h // 2
+        TABLE_X2 = center_x + crop_w // 2
+        TABLE_Y2 = center_y + crop_h // 2
+
+        # Ensure bounds
+        TABLE_X1 = max(0, TABLE_X1)
+        TABLE_Y1 = max(0, TABLE_Y1)
+        TABLE_X2 = min(cap_width, TABLE_X2)
+        TABLE_Y2 = min(cap_height, TABLE_Y2)
 
         # Crop to table
         table_region = image[TABLE_Y1:TABLE_Y2, TABLE_X1:TABLE_X2]
