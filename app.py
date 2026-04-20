@@ -179,7 +179,7 @@ def main():
         ret, image = cap.read()
         if not ret:
             break
-        image = image if args.disable_image_flip else cv.flip(image, 1) # ミラー表示
+        # image = image if args.disable_image_flip else cv.flip(image, 1) # Camera Mirroring
 
         # Crop and zoom
         # Adjustable zoom factor (1.0 = no zoom, 1.5 = 1.5× zoom, 2.0 = 2× zoom)
